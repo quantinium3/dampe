@@ -55,9 +55,9 @@ export const FileZod = z.object({
     updated_at: z.string(),
 })
 
-export type File = z.infer<typeof FileZod>;
+export type DampeFile = z.infer<typeof FileZod>;
 
-export const columns: ColumnDef<File>[] = [
+export const columns: ColumnDef<DampeFile>[] = [
     {
         id: "select",
         header: ({ table }) => (

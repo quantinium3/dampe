@@ -7,7 +7,6 @@ import {
     CardHeader,
     CardTitle,
     CardDescription,
-    CardFooter,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -27,7 +26,7 @@ export default function SignIn() {
     const router = useRouter();
 
     return (
-        <Card className="max-w-md rounded-none">
+        <Card className="w-full rounded-none">
             <CardHeader>
                 <CardTitle className="text-lg md:text-xl">Sign In</CardTitle>
                 <CardDescription className="text-xs md:text-sm">
@@ -188,22 +187,6 @@ export default function SignIn() {
                     </div>
                 </div>
             </CardContent>
-            <CardFooter>
-                <div className="flex justify-center w-full border-t pt-4">
-                    <p className="text-center text-xs text-neutral-500">
-                        built with{" "}
-                        <Link
-                            href="https://better-auth.com"
-                            className="underline"
-                            target="_blank"
-                        >
-                            <span className="dark:text-white/70 cursor-pointer">
-                                better-auth.
-                            </span>
-                        </Link>
-                    </p>
-                </div>
-            </CardFooter>
         </Card>
     );
 }

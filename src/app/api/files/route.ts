@@ -6,6 +6,9 @@ import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { r2 } from "@/lib/r2";
 import { eq } from "drizzle-orm";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { NextResponse } from "next/server";
 
 const fileInsertSchema = z.object({
     name: z.string().min(3),
@@ -68,3 +71,34 @@ export async function POST(request: Request) {
     }
 }
 
+export async function GET() {
+  try {
+    const session = await auth.api.getSession({ headers: await headers() });
+
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const id = session.user.id;
+    console.log("Authenticated user ID:", id);
+
+    const data = await db.select().from(files).where(eq(files.uploaded_by, id));
+    console.log("Found files:", data);
+
+    if (data.length === 0) {
+      return NextResponse.json(
+        { message: "No files found for this user." },
+        { status: 200 }
+      );
+    }
+
+    return NextResponse.json({ files: data }, { status: 200 });
+
+  } catch (error) {
+    console.error("Failed to fetch user files:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
+}

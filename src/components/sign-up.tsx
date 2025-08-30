@@ -5,7 +5,6 @@ import {
 	Card,
 	CardContent,
 	CardDescription,
-	CardFooter,
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
@@ -17,7 +16,6 @@ import { Loader2, X } from "lucide-react";
 import { signUp } from "@/lib/auth-client";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 
 export function SignUp() {
 	const [firstName, setFirstName] = useState("");
@@ -182,22 +180,6 @@ export function SignUp() {
 					</Button>
 				</div>
 			</CardContent>
-			<CardFooter>
-				<div className="flex justify-center w-full border-t pt-4">
-					<p className="text-center text-xs text-neutral-500">
-						built with{" "}
-						<Link
-							href="https://better-auth.com"
-							className="underline"
-							target="_blank"
-						>
-							<span className="dark:text-white/70 cursor-pointer">
-								better-auth.
-							</span>
-						</Link>
-					</p>
-				</div>
-			</CardFooter>
 		</Card>
 	);
 }
