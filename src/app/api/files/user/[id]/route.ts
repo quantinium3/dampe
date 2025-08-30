@@ -4,11 +4,11 @@ import { eq } from "drizzle-orm";
 
 export async function GET(
     _request: Request,
-    { params }: { params: { userid: string } }
+    { params }: { params: { id: string } }
 ) {
-    const { userid } = params;
+    const { id } = params;
 
-    const data = await db.select().from(files).where(eq(files.uploaded_by, userid));
+    const data = await db.select().from(files).where(eq(files.uploaded_by, id));
 
     if (data.length === 0) {
         return new Response(JSON.stringify({ error: "Files not found for this user" }), {
