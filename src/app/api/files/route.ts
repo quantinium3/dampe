@@ -14,7 +14,6 @@ const fileInsertSchema = z.object({
     name: z.string().min(3),
     mime_type: z.string().min(1),
     size: z.number().int().positive(),
-    uploaded_by: z.string().min(1),
 })
 
 export async function POST(request: Request) {
@@ -30,16 +29,22 @@ export async function POST(request: Request) {
             });
         }
 
-        const userId = validatedData.data.uploaded_by; // TODO: Replace with actual auth
+        const session = await auth.api.getSession({ headers: await headers() });
+        if (!session) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
 
-        const key = `uploads/${userId}/${createNamespacedId("file")}-${validatedData.data.name}`;
+        const id = session.user.id;
+        console.log("Authenticated user ID:", id);
+
+        const key = `uploads/${id}/${createNamespacedId("file")}-${validatedData.data.name}`;
 
         const [file] = await db.insert(files).values({
             name: validatedData.data.name,
             mime_type: validatedData.data.mime_type,
             size: validatedData.data.size,
             key,
-            uploaded_by: userId,
+            uploaded_by: id,
         }).returning();
 
         if (!file) {
@@ -72,33 +77,33 @@ export async function POST(request: Request) {
 }
 
 export async function GET() {
-  try {
-    const session = await auth.api.getSession({ headers: await headers() });
+    try {
+        const session = await auth.api.getSession({ headers: await headers() });
 
-    if (!session) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        if (!session) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+
+        const id = session.user.id;
+        console.log("Authenticated user ID:", id);
+
+        const data = await db.select().from(files).where(eq(files.uploaded_by, id));
+        console.log("Found files:", data);
+
+        if (data.length === 0) {
+            return NextResponse.json(
+                { message: "No files found for this user." },
+                { status: 200 }
+            );
+        }
+
+        return NextResponse.json({ files: data }, { status: 200 });
+
+    } catch (error) {
+        console.error("Failed to fetch user files:", error);
+        return NextResponse.json(
+            { error: "Internal Server Error" },
+            { status: 500 }
+        );
     }
-
-    const id = session.user.id;
-    console.log("Authenticated user ID:", id);
-
-    const data = await db.select().from(files).where(eq(files.uploaded_by, id));
-    console.log("Found files:", data);
-
-    if (data.length === 0) {
-      return NextResponse.json(
-        { message: "No files found for this user." },
-        { status: 200 }
-      );
-    }
-
-    return NextResponse.json({ files: data }, { status: 200 });
-
-  } catch (error) {
-    console.error("Failed to fetch user files:", error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
-  }
 }
