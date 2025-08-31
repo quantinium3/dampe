@@ -28,8 +28,8 @@ export default function FilesTable() {
                 const errorText = await res.text();
                 throw new Error(`Failed to fetch files: ${res.statusText} - ${errorText}`);
             }
-
             const data = await res.json();
+            
             setFiles(data.files || []);
         } catch (err) {
             if (err instanceof Error) {
@@ -60,16 +60,23 @@ export default function FilesTable() {
                 <LoadingDataTable
                     rowCount={6}
                     columnCount={5}
-                    columnHeaders={['Name', 'Email', 'Status', 'Role', 'Actions']}
+                    columnHeaders={['Name', 'Type', 'Size', 'Owner', 'Actions']}
                 />
-            </div>
-        );
-    } else {
-        return (
-            <div className="container mx-auto px-5">
-                <DataTable columns={columns} data={files} />
             </div>
         );
     }
 
+    if (err) {
+        return (
+            <div className="container mx-auto px-5">
+                <div className="text-red-500">Error: {err}</div>
+            </div>
+        );
+    }
+
+    return (
+        <div className="container mx-auto px-5">
+            <DataTable columns={columns} data={files} />
+        </div>
+    );
 }

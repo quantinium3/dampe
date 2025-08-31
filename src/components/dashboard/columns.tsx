@@ -52,6 +52,9 @@ export const FileZod = z.object({
     mime_type: z.enum(Object.values(MIME_TYPE)),
     size: z.number(),
     uploaded_by: z.string(),
+    owner_name: z.string(),
+    owner_email: z.string(),
+    created_at: z.string(),
     updated_at: z.string(),
 })
 
@@ -99,7 +102,7 @@ export const columns: ColumnDef<DampeFile>[] = [
         header: "Mime Type",
     },
     {
-        accessorKey: "uploaded_by",
+        accessorKey: "owner_email",
         header: "Uploaded By",
     },
     {

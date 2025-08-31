@@ -9,6 +9,7 @@ import { eq } from "drizzle-orm";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
+import { user } from "@/db/schema/auth-schema";
 
 const fileInsertSchema = z.object({
     name: z.string().min(3),
@@ -35,7 +36,6 @@ export async function POST(request: Request) {
         }
 
         const id = session.user.id;
-        console.log("Authenticated user ID:", id);
 
         const key = `uploads/${id}/${createNamespacedId("file")}-${validatedData.data.name}`;
 
@@ -79,26 +79,35 @@ export async function POST(request: Request) {
 export async function GET() {
     try {
         const session = await auth.api.getSession({ headers: await headers() });
-
         if (!session) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
-
         const id = session.user.id;
-        console.log("Authenticated user ID:", id);
-
-        const data = await db.select().from(files).where(eq(files.uploaded_by, id));
-        console.log("Found files:", data);
+        
+        const data = await db
+            .select({
+                id: files.id,
+                name: files.name,
+                mime_type: files.mime_type,
+                size: files.size,
+                updated_at: files.updated_at,
+                created_at: files.created_at,
+                uploaded_by: files.uploaded_by,
+                owner_name: user.name,
+                owner_email: user.email,
+            })
+            .from(files)
+            .innerJoin(user, eq(files.uploaded_by, user.id))
+            .where(eq(files.uploaded_by, id));
 
         if (data.length === 0) {
             return NextResponse.json(
-                { message: "No files found for this user." },
+                { files: [], message: "No files found for this user." },
                 { status: 200 }
             );
         }
 
         return NextResponse.json({ files: data }, { status: 200 });
-
     } catch (error) {
         console.error("Failed to fetch user files:", error);
         return NextResponse.json(
