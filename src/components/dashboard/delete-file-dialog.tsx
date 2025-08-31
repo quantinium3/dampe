@@ -31,7 +31,7 @@ export function DialogFileDelete<TData>({ table, rowSelection }: DialogFileDelet
 
     return (
         <Dialog>
-            <DialogTrigger>
+            <DialogTrigger className="px-2 py-[5px]">
                 Delete
             </DialogTrigger>
             <DialogContent>
