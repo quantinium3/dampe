@@ -1,4 +1,4 @@
-import { DashboardSidebar } from "@/components/dashboard/sidebar";
+import DashboardSidebar from "@/components/dashboard/sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar"
 
 export default function DashboardLayout({
@@ -8,10 +8,10 @@ export default function DashboardLayout({
 }) {
     return (
         <SidebarProvider>
-                <DashboardSidebar />
-                <section className="w-full">
-                    {children}
-                </section>
+            <DashboardSidebar />
+            <section className="w-full">
+                {children}
+            </section>
         </SidebarProvider>
     );
 }
