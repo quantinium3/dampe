@@ -20,7 +20,7 @@ interface DialogFileDeleteProps<TData> {
 export function DialogFileDelete<TData>({ table, rowSelection }: DialogFileDeleteProps<TData>) {
     const isAnyRowSelected = Object.keys(rowSelection).length > 0;
 
-    const handleLogSelected = () => {
+    function DeleteFiles() {
         const selectedRows = table.getSelectedRowModel().rows.map(row => row.original);
         console.log(selectedRows);
     };
@@ -32,7 +32,7 @@ export function DialogFileDelete<TData>({ table, rowSelection }: DialogFileDelet
     return (
         <Dialog>
             <DialogTrigger>
-                    Log Selected
+                Delete
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
@@ -43,7 +43,7 @@ export function DialogFileDelete<TData>({ table, rowSelection }: DialogFileDelet
                 </DialogHeader>
                 <DialogFooter>
                     <Button variant="default">NO</Button>
-                    <Button variant="destructive" onClick={handleLogSelected}>YES</Button>
+                    <Button variant="destructive" onClick={DeleteFiles}>YES</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
