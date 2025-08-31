@@ -32,6 +32,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import DialogFileUpload from "@/components/dashboard/file-upload-dialog"
+import { DialogFileDelete } from "./delete-file-dialog"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -82,6 +83,9 @@ export function DataTable<TData, TValue>({
                 />
                 <div className="border mx-2 px-2 py-[5px] rounded-md hover:bg-zinc-100 shadow-xs">
                     <DialogFileUpload />
+                </div>
+                <div className="border mx-2 px-2 py-[5px] rounded-md hover:bg-zinc-100 shadow-xs">
+                    <DialogFileDelete table={table} rowSelection={rowSelection} />
                 </div>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
