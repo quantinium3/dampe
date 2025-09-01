@@ -1,15 +1,11 @@
-
 import {
     Cloud,
-    FolderOpen,
     Upload,
-    Share2,
     Trash2,
     Star,
     Clock,
     Users,
     Bot,
-    Sparkles,
     FileText
 } from "lucide-react"
 import {
@@ -140,7 +136,7 @@ export default function DashboardSidebar() {
                     </div>
                     <div>1MB of 10 GB used</div>
                     <div className="pt-2 border-t">
-                        © 2025 Nexus Inc. All rights reserved.
+                        <div>© {new Date().getFullYear()} Nexus Inc. All rights reserved.</div>
                     </div>
                     <div className="flex gap-3 text-xs">
                         <a href="#" className="hover:underline">Privacy</a>
