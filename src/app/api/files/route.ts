@@ -12,6 +12,7 @@ import { NextResponse } from "next/server";
 import { user } from "@/db/schema/auth-schema";
 
 const fileInsertSchema = z.object({
+    id: z.string().min(8),
     name: z.string().min(3),
     mime_type: z.string().min(1),
     size: z.number().int().positive(),
@@ -40,6 +41,7 @@ export async function POST(request: Request) {
         const key = `uploads/${id}/${createNamespacedId("file")}-${validatedData.data.name}`;
 
         const [file] = await db.insert(files).values({
+            id: validatedData.data.id,
             name: validatedData.data.name,
             mime_type: validatedData.data.mime_type,
             size: validatedData.data.size,
@@ -83,7 +85,7 @@ export async function GET() {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
         const id = session.user.id;
-        
+
         const data = await db
             .select({
                 id: files.id,

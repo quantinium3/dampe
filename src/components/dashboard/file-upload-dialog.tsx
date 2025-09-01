@@ -58,6 +58,7 @@ export default function DialogFileUpload() {
     const uploadFile = async (file: FileItem) => {
         updateFileStatus(file.id, { uploading: true, error: "" })
         const fileInfo = {
+            id: file.id,
             name: file.name,
             mime_type: file.type,
             size: file.size,
@@ -133,17 +134,17 @@ export default function DialogFileUpload() {
     const handleUpload = async () => {
         if (selectedFiles.length === 0) return;
         setIsUploading(true);
-        
+
         const uploads = selectedFiles.map((file) => uploadFile(file))
-        
+
         try {
             await Promise.allSettled(uploads);
-            
+
             setTimeout(() => {
                 setSelectedFiles(currentFiles => {
                     const successfulFiles = currentFiles.filter(f => f.uploaded && !f.error);
                     const failedFiles = currentFiles.filter(f => !f.uploaded || f.error);
-                    
+
                     if (failedFiles.length === 0) {
                         toast("All files uploaded successfully");
                         return [];
@@ -158,11 +159,11 @@ export default function DialogFileUpload() {
                             description: `Failed files: ${failedFileNames}`
                         });
                     }
-                    
+
                     return currentFiles;
                 });
             }, 100);
-            
+
         } catch (err) {
             console.error("Upload failed: ", err)
             toast("Failed to upload files", {
