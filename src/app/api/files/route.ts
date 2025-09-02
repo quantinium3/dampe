@@ -14,7 +14,7 @@ import { user } from "@/db/schema/auth-schema";
 const fileInsertSchema = z.object({
     id: z.string().min(8),
     name: z.string().min(3),
-    mime_type: z.string().min(1),
+    mime_type: z.string().min(1).or(z.literal("")).transform(val => val || "application/octet-stream"),
     size: z.number().int().positive(),
 })
 
@@ -112,6 +112,27 @@ export async function GET() {
         return NextResponse.json({ files: data }, { status: 200 });
     } catch (error) {
         console.error("Failed to fetch user files:", error);
+        return NextResponse.json(
+            { error: "Internal Server Error" },
+            { status: 500 }
+        );
+    }
+}
+
+export async function DELETE(request: Request) {
+    try {
+        const { fileIds } = await request.json();
+        
+        const session = await auth.api.getSession({ headers: await headers() });
+        if (!session) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+
+        await db.delete(files).where(eq(files.id, fileIds[0]));
+        
+        return NextResponse.json({ success: true }, { status: 200 });
+    } catch (error) {
+        console.error("Failed to delete files:", error);
         return NextResponse.json(
             { error: "Internal Server Error" },
             { status: 500 }

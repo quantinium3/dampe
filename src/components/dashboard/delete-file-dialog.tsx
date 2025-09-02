@@ -20,9 +20,23 @@ interface DialogFileDeleteProps<TData> {
 export function DialogFileDelete<TData>({ table, rowSelection }: DialogFileDeleteProps<TData>) {
     const isAnyRowSelected = Object.keys(rowSelection).length > 0;
 
-    function DeleteFiles() {
+    async function DeleteFiles() {
         const selectedRows = table.getSelectedRowModel().rows.map(row => row.original);
-        console.log(selectedRows);
+        const fileIds = selectedRows.map((row: any) => row.id);
+        
+        try {
+            const response = await fetch('/api/files', {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ fileIds })
+            });
+            
+            if (response.ok) {
+                window.location.reload();
+            }
+        } catch (error) {
+            console.error('Failed to delete files:', error);
+        }
     };
 
     if (!isAnyRowSelected) {
