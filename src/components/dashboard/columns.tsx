@@ -83,6 +83,62 @@ const handleAnalyze = (fileId: string) => {
     }
 };
 
+// Delete dialog state will be managed in the component
+let deleteDialog: {
+    open: boolean;
+    fileId: string | null;
+    setOpen: (open: boolean) => void;
+    setFileId: (id: string | null) => void;
+} | null = null;
+
+const handleDelete = (fileId: string) => {
+    if (deleteDialog) {
+        deleteDialog.setFileId(fileId);
+        deleteDialog.setOpen(true);
+    }
+};
+
+export function DeleteDialog() {
+    const [open, setOpen] = useState(false);
+    const [fileId, setFileId] = useState<string | null>(null);
+    
+    // Set the global reference
+    deleteDialog = { open, fileId, setOpen, setFileId };
+    
+    const handleConfirmDelete = async () => {
+        if (!fileId) return;
+        
+        try {
+            const response = await fetch(`/api/files/${fileId}`, {
+                method: 'DELETE',
+            });
+            if (response.ok) {
+                setOpen(false);
+                window.location.reload();
+            }
+        } catch (error) {
+            console.error('Delete failed:', error);
+        }
+    };
+    
+    return (
+        <Dialog open={open} onOpenChange={setOpen}>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>Are you absolutely sure?</DialogTitle>
+                </DialogHeader>
+                <p className="text-sm text-muted-foreground">
+                    This action cannot be undone. This will permanently delete the file.
+                </p>
+                <div className="flex justify-end gap-2 mt-4">
+                    <Button variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
+                    <Button variant="destructive" onClick={handleConfirmDelete}>Delete</Button>
+                </div>
+            </DialogContent>
+        </Dialog>
+    );
+}
+
 export function AnalysisDialog() {
     const [open, setOpen] = useState(false);
     const [fileId, setFileId] = useState<string | null>(null);
@@ -218,7 +274,7 @@ export const columns: ColumnDef<DampeFile>[] = [
                         <DropdownMenuItem>Share</DropdownMenuItem>
                         <DropdownMenuItem>File Information</DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>Delete</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleDelete(file.id)}>Delete</DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             )

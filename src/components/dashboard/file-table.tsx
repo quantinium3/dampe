@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { columns, DampeFile, AnalysisDialog } from "./columns";
+import { columns, DampeFile, AnalysisDialog, DeleteDialog } from "./columns";
 import { DataTable } from "./data-table";
 import { useSession } from "@/lib/auth-client";
 import { LoadingDataTable } from "./skeleton-table";
@@ -78,6 +78,7 @@ export default function FilesTable() {
         <div className="container mx-auto px-5">
             <DataTable columns={columns} data={files} />
             <AnalysisDialog />
+            <DeleteDialog />
         </div>
     );
 }
