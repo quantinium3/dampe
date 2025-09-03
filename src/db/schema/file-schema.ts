@@ -1,5 +1,7 @@
 import {
+    boolean,
     integer,
+    jsonb,
     pgEnum,
     pgTable,
     primaryKey,
@@ -46,6 +48,8 @@ export const files = pgTable("files", {
         mode: "date",
         withTimezone: true
     }).notNull().defaultNow(),
+    ai_metadata: jsonb("ai_metadata").default(null),
+    ai_analyzed: boolean("ai_analyzed").default(false),
 });
 
 export const userFiles = pgTable(

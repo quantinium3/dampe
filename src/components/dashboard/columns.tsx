@@ -3,6 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { MoreHorizontal } from "lucide-react"
 import { ArrowUpDown } from "lucide-react"
+import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -12,7 +13,14 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog"
 import { Checkbox } from "@/components/ui/checkbox"
+import FileAnalysis from "@/components/FileAnalysis"
 import z from "zod"
 
 const MIME_TYPE = {
@@ -60,7 +68,42 @@ export const FileZod = z.object({
 
 export type DampeFile = z.infer<typeof FileZod>;
 
+// Analysis dialog state will be managed in the component
+let analysisDialog: {
+    open: boolean;
+    fileId: string | null;
+    setOpen: (open: boolean) => void;
+    setFileId: (id: string | null) => void;
+} | null = null;
+
+const handleAnalyze = (fileId: string) => {
+    if (analysisDialog) {
+        analysisDialog.setFileId(fileId);
+        analysisDialog.setOpen(true);
+    }
+};
+
+export function AnalysisDialog() {
+    const [open, setOpen] = useState(false);
+    const [fileId, setFileId] = useState<string | null>(null);
+    
+    // Set the global reference
+    analysisDialog = { open, fileId, setOpen, setFileId };
+    
+    return (
+        <Dialog open={open} onOpenChange={setOpen}>
+            <DialogContent className="max-w-2xl">
+                <DialogHeader>
+                    <DialogTitle>AI Document Analysis</DialogTitle>
+                </DialogHeader>
+                {fileId && <FileAnalysis fileId={fileId} />}
+            </DialogContent>
+        </Dialog>
+    );
+}
+
 export const columns: ColumnDef<DampeFile>[] = [
+    
     {
         id: "select",
         header: ({ table }) => (
@@ -168,6 +211,7 @@ export const columns: ColumnDef<DampeFile>[] = [
                             Copy payment {file.id}
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
+                        <DropdownMenuItem onClick={() => handleAnalyze(file.id)}>AI-Analyze</DropdownMenuItem>
                         <DropdownMenuItem>Download</DropdownMenuItem>
                         <DropdownMenuItem>Rename</DropdownMenuItem>
                         <DropdownMenuSeparator />
