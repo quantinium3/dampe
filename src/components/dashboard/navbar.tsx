@@ -17,6 +17,10 @@ import { Button } from "../ui/button";
 export default function DashboardNavbar() {
     const { data: session } = useSession();
 
+    const handleClick = () => {
+        window.location.href = "/";
+    }
+
     return (
         <>
             <div className="flex justify-between items-center p-2 border-b">
@@ -38,6 +42,7 @@ export default function DashboardNavbar() {
                                 <DropdownMenuContent>
                                     <DropdownMenuLabel>{session?.user.name}</DropdownMenuLabel>
                                     <DropdownMenuSeparator />
+                                    <DropdownMenuItem onClick={handleClick}>Home</DropdownMenuItem>
                                     <DropdownMenuItem>Profile</DropdownMenuItem>
                                     <DropdownMenuItem>Settings</DropdownMenuItem>
                                     <DropdownMenuItem onClick={() => signOut()}>Sign out</DropdownMenuItem>

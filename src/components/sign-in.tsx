@@ -87,7 +87,7 @@ export default function SignIn() {
                                     { email, password, rememberMe },
                                     {
                                         onSuccess(context) {
-                                            router.push("/dashboard");
+                                            router.push("/");
                                         },
                                     },
                                 );
@@ -109,7 +109,7 @@ export default function SignIn() {
                             onClick={async () => {
                                 await signIn.social({
                                     provider: "google",
-                                    callbackURL: "/dashboard",
+                                    callbackURL: "/",
                                 });
                             }}
                         >
@@ -144,7 +144,7 @@ export default function SignIn() {
                             onClick={async () => {
                                 await signIn.social({
                                     provider: "github",
-                                    callbackURL: "/dashboard",
+                                    callbackURL: "/",
                                 });
                             }}
                         >
@@ -167,7 +167,7 @@ export default function SignIn() {
                             onClick={async () => {
                                 await signIn.social({
                                     provider: "microsoft",
-                                    callbackURL: "/dashboard",
+                                    callbackURL: "/",
                                 });
                             }}
                         >

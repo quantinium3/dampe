@@ -116,7 +116,7 @@ ${text.slice(0, 100000)}
 
 JSON schema:
 {
-  "summary": "Brief summary in atleast 4000 characters",
+  "summary": "Brief summary in atleast 5000 characters",
   "keywords": ["keyword1", "keyword2", "keyword3", "keyword4", "keyword5"],
   "topics": ["main topic 1", "main topic 2", "main topic 3"],
   "contentType": "document|report|article|letter|manual|other",
