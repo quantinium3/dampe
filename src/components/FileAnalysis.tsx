@@ -13,6 +13,11 @@ interface Metadata {
   keywords: string[];
   topics: string[];
   wordCount: number;
+  caption?: string;
+  labels?: string[];
+  detectedText?: string;
+  dominantColors?: string[];
+  safety?: string;
 }
 
 export default function FileAnalysis({ fileId }: FileAnalysisProps) {
@@ -67,18 +72,27 @@ export default function FileAnalysis({ fileId }: FileAnalysisProps) {
   return (
     <Card className="shadow-md">
       <CardHeader>
-        <CardTitle>AI Document Analysis</CardTitle>
+        <CardTitle>AI Analysis</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div>
-          <h3 className="font-semibold text-lg">Summary</h3>
-          <p className="text-muted-foreground">{metadata.summary}</p>
-        </div>
+        {metadata.caption && (
+          <div>
+            <h3 className="font-semibold text-lg">Caption</h3>
+            <p className="text-muted-foreground">{metadata.caption}</p>
+          </div>
+        )}
+
+        {metadata.summary && (
+          <div>
+            <h3 className="font-semibold text-lg">Summary</h3>
+            <p className="text-muted-foreground">{metadata.summary}</p>
+          </div>
+        )}
 
         <div>
           <h3 className="font-semibold text-lg">Keywords</h3>
           <div className="flex flex-wrap gap-2">
-            {metadata.keywords.map((kw, i) => (
+            {(metadata.keywords || metadata.labels || []).map((kw, i) => (
               <span
                 key={i}
                 className="px-2 py-1 text-sm bg-primary/10 rounded-full"
@@ -89,19 +103,44 @@ export default function FileAnalysis({ fileId }: FileAnalysisProps) {
           </div>
         </div>
 
-        <div>
-          <h3 className="font-semibold text-lg">Topics</h3>
-          <ul className="list-disc list-inside text-muted-foreground">
-            {metadata.topics.map((topic, i) => (
-              <li key={i}>{topic}</li>
-            ))}
-          </ul>
-        </div>
+        {metadata.topics && metadata.topics.length > 0 && (
+          <div>
+            <h3 className="font-semibold text-lg">Topics</h3>
+            <ul className="list-disc list-inside text-muted-foreground">
+              {metadata.topics.map((topic, i) => (
+                <li key={i}>{topic}</li>
+              ))}
+            </ul>
+          </div>
+        )}
 
-        <div>
-          <h3 className="font-semibold text-lg">Word count</h3>
-          <p className="text-muted-foreground">{metadata.wordCount}</p>
-        </div>
+        {metadata.detectedText && (
+          <div>
+            <h3 className="font-semibold text-lg">Detected Text (OCR)</h3>
+            <p className="text-muted-foreground whitespace-pre-wrap">{metadata.detectedText}</p>
+          </div>
+        )}
+
+        {metadata.dominantColors && metadata.dominantColors.length > 0 && (
+          <div>
+            <h3 className="font-semibold text-lg">Dominant Colors</h3>
+            <div className="flex items-center gap-2 flex-wrap">
+              {metadata.dominantColors.map((c, i) => (
+                <div key={i} className="flex items-center gap-2">
+                  <span className="inline-block h-4 w-4 rounded" style={{ backgroundColor: c }} />
+                  <span className="text-xs text-muted-foreground">{c}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {typeof metadata.wordCount === 'number' && (
+          <div>
+            <h3 className="font-semibold text-lg">Word count</h3>
+            <p className="text-muted-foreground">{metadata.wordCount}</p>
+          </div>
+        )}
       </CardContent>
     </Card>
   );
