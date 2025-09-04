@@ -12,7 +12,7 @@ const client = new Groq({ apiKey: process.env.GROQ_API_KEY! });
 
 async function extractText(buffer: Buffer, mime: string) {
   console.log(`Extracting text from file type: ${mime}`);
-  
+
   if (mime === "application/pdf") {
     const pdf = (await import("pdf-parse")).default;
     const data = await pdf(buffer);
@@ -40,7 +40,7 @@ async function extractText(buffer: Buffer, mime: string) {
   if (mime.startsWith("image/")) {
     return `This is an image file (${mime}). Image analysis not yet supported.`;
   }
-  
+
   console.log(`Unsupported file type: ${mime}`);
   return `File type ${mime} - content extraction not supported, but file exists.`;
 }
@@ -63,7 +63,7 @@ export async function POST(
         Bucket: process.env.R2_BUCKET!,
         Key: file.key,
       }),
-      { expiresIn: 60 * 10 } 
+      { expiresIn: 60 * 10 }
     );
 
     const res = await fetch(url);
@@ -79,17 +79,22 @@ export async function POST(
       messages: [
         {
           role: "user",
-          content: `Analyze the document and return JSON only with:
-{
-  "summary": string,
-  "keywords": string[],
-  "topics": string[],
-  "wordCount": number
-}
+          content: `Analyze the following text and respond only with valid JSON. No backticks, no explanations.
 
-File name: ${file.name}
-Content: ${text.slice(0, 6000)}
-          `,
+Text to analyze:
+${text.slice(0, 100000)}
+
+JSON schema:
+{
+  "summary": "Brief summary in atleast 4000 characters",
+  "keywords": ["keyword1", "keyword2", "keyword3", "keyword4", "keyword5"],
+  "topics": ["main topic 1", "main topic 2", "main topic 3"],
+  "contentType": "document|report|article|letter|manual|other",
+  "language": "detected language",
+  "wordCount": ${text.split(' ').length},
+  "sentiment": "positive|negative|neutral",
+  "category": "business|academic|personal|technical|legal|other"
+}`
         },
       ],
       temperature: 0.3,
@@ -97,7 +102,7 @@ Content: ${text.slice(0, 6000)}
 
     const aiOutput = completion.choices[0].message?.content ?? "";
     console.log('AI raw output:', aiOutput);
-    
+
     let metadata;
     try {
       const clean = aiOutput.replace(/```json|```/g, "").trim();
