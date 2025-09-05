@@ -20,6 +20,9 @@ export default function DashboardNavbar() {
     const handleClick = () => {
         window.location.href = "/";
     }
+    const handleProfileClick = () => {
+        window.location.href = "/profile";
+    }
 
     return (
         <>
@@ -43,7 +46,7 @@ export default function DashboardNavbar() {
                                     <DropdownMenuLabel>{session?.user.name}</DropdownMenuLabel>
                                     <DropdownMenuSeparator />
                                     <DropdownMenuItem onClick={handleClick}>Home</DropdownMenuItem>
-                                    <DropdownMenuItem>Profile</DropdownMenuItem>
+                                    <DropdownMenuItem onClick={handleProfileClick}>Profile</DropdownMenuItem>
                                     <DropdownMenuItem>Settings</DropdownMenuItem>
                                     <DropdownMenuItem onClick={() => signOut()}>Sign out</DropdownMenuItem>
                                 </DropdownMenuContent>
