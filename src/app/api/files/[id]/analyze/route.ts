@@ -6,9 +6,11 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { GetObjectCommand } from "@aws-sdk/client-s3";
 import { r2 } from "@/lib/r2";
 import mammoth from "mammoth";
+import { summarizer } from "@/lib/utils/summarizer";
 import Groq from "groq-sdk";
 
 const client = new Groq({ apiKey: process.env.GROQ_API_KEY! });
+
 
 async function extractText(buffer: Buffer, mime: string) {
   console.log(`Extracting text from file type: ${mime}`);
@@ -98,49 +100,36 @@ export async function POST(
           labels: ["image", file.mime_type.split("/")[1] ?? "unknown"],
         };
       }
+
     } else {
       const text = await extractText(buffer, file.mime_type);
       if (!text.trim()) {
         return NextResponse.json({ error: "No text extracted" }, { status: 400 });
       }
 
-      const completion = await client.chat.completions.create({
-        model: "llama-3.1-8b-instant",
-        messages: [
-          {
-            role: "user",
-            content: `Analyze the following text and respond only with valid JSON. No backticks, no explanations.
-
-Text to analyze:
-${text.slice(0, 100000)}
-
-JSON schema:
-{
-  "summary": "Brief summary in atleast 5000 characters",
-  "keywords": ["keyword1", "keyword2", "keyword3", "keyword4", "keyword5"],
-  "topics": ["main topic 1", "main topic 2", "main topic 3"],
-  "contentType": "document|report|article|letter|manual|other",
-  "language": "detected language",
-  "wordCount": ${text.split(' ').length},
-  "sentiment": "positive|negative|neutral",
-  "category": "business|academic|personal|technical|legal|other"
-}`
-          },
-        ],
-        temperature: 0.3,
-      });
-      aiOutput = completion.choices[0].message?.content ?? "";
+      // Use local summarizer
+      let summaryObj: any = {};
       try {
-        const clean = aiOutput.replace(/```json|```/g, "").trim();
-        metadata = JSON.parse(clean);
-      } catch {
-        metadata = {
-          summary: aiOutput.slice(0, 200) + '...',
-          keywords: ['analysis', 'document'],
-          topics: ['General content'],
-          wordCount: text.split(' ').length
-        };
+        summaryObj = await summarizer.summarize(text, { sentences: 10 });
+      } catch (err) {
+        summaryObj.summary = text.slice(0, 1000) + "...";
       }
+
+      const keywords = Array.from(
+        new Set(
+          (summaryObj.summary || "")
+            .split(/\W+/)
+            .filter((w: string) => w.length > 5)
+            .slice(0, 5)
+        )
+      );
+
+      metadata = {
+        summary: summaryObj.summary,
+        keywords,
+        topics: ["General content"],
+        wordCount: text.split(" ").length,
+      };
     }
 
     console.log('AI raw output:', aiOutput);
