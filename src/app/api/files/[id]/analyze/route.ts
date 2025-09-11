@@ -73,7 +73,6 @@ export async function POST(
     let metadata: any;
 
     if (file.mime_type.startsWith("image/")) {
-      // Vision analysis using image URL (presigned URL)
       const completion = await client.chat.completions.create({
         model: "meta-llama/llama-4-scout-17b-16e-instruct",
         messages: [
