@@ -179,7 +179,7 @@ export async function POST(
       
       if (summarizer) {
         try {
-          const summaryResult = await summarizer(text.slice(0, 5000), {
+          const summaryResult = await summarizer(text.slice(0, 8000), {
             max_length: 500,
             min_length: 150,
             do_sample: false
