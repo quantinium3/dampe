@@ -4,7 +4,6 @@ import React from 'react'
 import { useSession } from '@/lib/auth-client'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import Link from "next/link"
 import { Cloud, Search, Shield, Zap } from "lucide-react"
 
 export default function Landing() {
