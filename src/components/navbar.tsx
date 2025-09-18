@@ -27,16 +27,16 @@ export default function Navbar() {
     }
  
     return (
-        <nav className="flex flex-row justify-between p-4 border-b border-b-slate-200">
+        <nav className="flex items-center justify-between p-4 border-b border-b-slate-200">
             <div className="font-bold text-2xl">
                 Nexus
             </div>
             <div>
                 {session && (
                     <>
-                        <Button variant="link" className="cursor-pointer text-lg" onClick={handleDashboardClick}>
+                        {/* <Button variant="link" className="cursor-pointer text-lg" onClick={handleDashboardClick}>
                             Dashboard
-                        </Button>
+                        </Button> */}
                         <Button variant="link" className="cursor-pointer text-lg" onClick={handleProfileClick}>
                             Profile
                         </Button>
