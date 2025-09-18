@@ -7,11 +7,10 @@ import { GetObjectCommand } from "@aws-sdk/client-s3";
 import { r2 } from "@/lib/r2";
 import mammoth from "mammoth";
 import Groq from "groq-sdk";
+import { pipeline } from '@xenova/transformers';
+
 
 const client = new Groq({ apiKey: process.env.GROQ_API_KEY! });
-
-
-import { pipeline } from '@xenova/transformers';
 
 let summarizer: any = null;
 let classifier: any = null;
@@ -19,11 +18,11 @@ let classifier: any = null;
 async function getSummarizer() {
   if (!summarizer) {
     try {
-      console.log('Loading summarization model...');
-      summarizer = await pipeline('summarization', 'Xenova/distilbart-cnn-6-6');
-      console.log('Summarization model loaded');
+      console.log('Loading T5 summarization model...');
+        summarizer = await pipeline("summarization", "Xenova/distilbart-xsum-12-1");
+      console.log('T5 summarization model loaded');
     } catch (error) {
-      console.log('Failed to load summarization model, using fallback');
+      console.log('Failed to load T5 summarization model, using fallback');
       return null;
     }
   }
@@ -33,11 +32,11 @@ async function getSummarizer() {
 async function getClassifier() {
   if (!classifier) {
     try {
-      console.log('Loading classification model...');
-      classifier = await pipeline('text-classification', 'Xenova/distilbert-base-uncased-finetuned-sst-2-english');
-      console.log('Classification model loaded');
+      console.log('Loading sentiment classification model...');
+        classifier = await pipeline('text-classification', 'Xenova/bert-base-multilingual-uncased-sentiment');
+      console.log('Sentiment classification model loaded');
     } catch (error) {
-      console.log('Failed to load classification model, using fallback');
+      console.log('Failed to load sentiment classification model, using fallback');
       return null;
     }
   }
@@ -145,7 +144,7 @@ export async function POST(
           {
             role: "user",
             content: [
-              { type: "text", text: "Analyze the image and respond only with valid JSON. No backticks, no prose." },
+              { type: "text", text: "Analyze the image and respond only with valid JSON in more than 5000 words. No backticks, no prose" },
               { type: "text", text: `JSON schema:\n{\n  "caption": "one sentence caption",\n  "labels": ["label1", "label2", "label3"],\n  "detectedText": "OCR extracted text if any",\n  "dominantColors": ["#RRGGBB", "#RRGGBB"],\n  "safety": "safe|nsfw|graphic|unknown"\n}` },
               { type: "image_url", image_url: { url } },
             ],
@@ -179,9 +178,9 @@ export async function POST(
       
       if (summarizer) {
         try {
-          const summaryResult = await summarizer(text.slice(0, 8000), {
-            max_length: 500,
-            min_length: 150,
+          const summaryResult = await summarizer(text.slice(0, 5000), {
+            max_length: 5000,
+            min_length: 1500,
             do_sample: false
           });
           summary = Array.isArray(summaryResult) ? summaryResult[0].summary_text : summaryResult.summary_text;
@@ -195,7 +194,7 @@ export async function POST(
       
       if (classifier) {
         try {
-          const sentimentResult = await classifier(text.slice(0, 500));
+          const sentimentResult = await classifier(text.slice(0, 512));
           sentiment = Array.isArray(sentimentResult) ? sentimentResult[0].label.toLowerCase() : sentimentResult.label.toLowerCase();
           sentiment = sentiment === 'positive' ? 'positive' : sentiment === 'negative' ? 'negative' : 'neutral';
         } catch (error) {
