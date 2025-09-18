@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
     title: "Nexus",
-    description: "AWS Storage with AI Integration",
+    description: "Cloudflare R2 + AI File Analysis Tool",
 };
 
 export default function RootLayout({
