@@ -7,25 +7,22 @@ import { GetObjectCommand } from "@aws-sdk/client-s3";
 import { r2 } from "@/lib/r2";
 import mammoth from "mammoth";
 import Groq from "groq-sdk";
+import { parsePdf, parseDocx, parseText, getSupportedFileTypes, getFileTypeCategory } from "@/lib/file-parsers"
+
 
 const client = new Groq({ apiKey: process.env.GROQ_API_KEY! });
 
-async function extractText(buffer: Buffer, mime: string) {
+async function extractText(arrayBuffer: ArrayBuffer, mime: string) {
   console.log(`Extracting text from file type: ${mime}`);
 
   if (mime === "application/pdf") {
-    if (!buffer || buffer.length < 100) {
-      console.log('PDF buffer is empty or too small, skipping extraction.');
-      return "PDF file is empty or corrupted.";
-    }
     try {
-      const pdfParse = (await import("pdf-parse")).default;
-      const data = await pdfParse(buffer);
-      console.log(`PDF text length: ${data.text.length}`);
-      return data.text;
-    } catch (error) {
-      console.log('PDF extraction failed:', error);
-      return "PDF file appears to be corrupted or invalid. Unable to extract text content.";
+      const extractedText = await parsePdf(arrayBuffer);
+      console.log(`PDF text length: ${extractedText.length}`);
+      return extractedText;
+    } catch (pdfError) {
+      console.warn('PDF parsing failed:', pdfError);
+      return "PDF document (text extraction failed)";
     }
   }
   if (
@@ -33,16 +30,16 @@ async function extractText(buffer: Buffer, mime: string) {
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   ) {
     try {
-      const result = await mammoth.extractRawText({ buffer });
-      console.log(`DOCX text length: ${result.value.length}`);
-      return result.value;
+      const extractedText = await parseDocx(arrayBuffer);
+      console.log(`DOCX text length: ${extractedText.length}`);
+      return extractedText;
     } catch (error) {
       console.log('DOCX extraction failed:', error);
       return `DOCX file appears to be corrupted or invalid. Unable to extract text content.`;
     }
   }
   if (mime.startsWith("text/")) {
-    const text = buffer.toString("utf-8");
+    const text = await parseText(arrayBuffer);
     console.log(`Text file length: ${text.length}`);
     return text;
   }
@@ -76,7 +73,7 @@ export async function POST(
     );
 
     const res = await fetch(url);
-    const buffer = Buffer.from(await res.arrayBuffer());
+    const arrayBuffer = await res.arrayBuffer();
 
     let aiOutput = "";
     let metadata: any;
@@ -107,7 +104,7 @@ export async function POST(
         };
       }
     } else {
-      const text = await extractText(buffer, file.mime_type);
+      const text = await extractText(arrayBuffer, file.mime_type);
       if (!text.trim()) {
         return NextResponse.json({ error: "No text extracted" }, { status: 400 });
       }
