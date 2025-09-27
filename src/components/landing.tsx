@@ -21,13 +21,13 @@ export default function Landing() {
             <main className="container mx-auto px-4 py-16">
                 <div className="text-center mb-16">
                     <h1 className="text-5xl font-bold text-gray-900 mb-6">
-                        Store Here, Access Anywhere <span className="text-cyan-500">Powered by Tokito-AI</span>
+                        Store Here, Access Anywhere <span className="text-cyan-500">Powered by AI</span>
                     </h1>
                     <p className="text-xl text-gray-700 mb-8 max-w-2xl mx-auto">
                         Store, organize, and find your files instantly with this intelligent cloud storage platform. Access
                         everything from anywhere using just your Gmail account.
                         <br />
-                        <span className="text-cyan-400 font-bold">[Mist Breathing 5th Form]</span>
+                        <span className="text-cyan-400 font-bold">[Unleash The Powerfull Storage]</span>
                     </p>
                     <div className="flex gap-4 justify-center">
                             <Button onClick={handleDashboardClick} variant="default" size="lg" className="text-lg px-8 py-3 cursor-pointer">
