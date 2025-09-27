@@ -2,41 +2,41 @@
 
 > *"Store Here, Access Anywhere - Powered by AI"*  
 
-## ✨ Overview
+## Overview
 
 Dampe is a modern, intelligent cloud storage platform that combines secure file storage with AI-powered analysis. Built with cutting-edge technologies, it offers seamless file management, smart content analysis, and universal accessibility through your Gmail account.
 
-## 🚀 Key Features
+## Key Features
 
-### 🔐 **Secure Authentication**
+### **Secure Authentication**
 - Gmail-based OAuth integration
 - GitHub social login support
 - Email/password authentication with Better Auth
 
-### ☁️ **Intelligent Cloud Storage**
+### **Intelligent Cloud Storage**
 - Secure file upload and management
 - AWS S3-compatible storage with Cloudflare R2
 - Real-time file organization and categorization
 
-### 🤖 **AI-Powered Analysis**
+### **AI-Powered Analysis**
 - **Document Intelligence**: Automatic text extraction and summarization
 - **Image Recognition**: OCR, object detection, and color analysis
 - **Smart Categorization**: AI-driven file organization and tagging
 - **Content Search**: Search files by content, not just names
 
-### 📊 **Advanced Dashboard**
+### **Advanced Dashboard**
 - Interactive file management table
 - Real-time upload progress tracking
 - File analytics and insights
 - Responsive design for all devices
 
-### 🎨 **Modern UI/UX**
+### **Modern UI/UX**
 - Beautiful animated cloud backgrounds
 - Dark/light theme support
 - Responsive design with Tailwind CSS
 - Smooth animations with Framer Motion
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### **Frontend**
 - **Framework**: Next.js 15.5.2 with App Router
@@ -70,7 +70,7 @@ Dampe is a modern, intelligent cloud storage platform that combines secure file 
 - **Package Manager**: Bun/PNPM support
 - **Type Safety**: Full TypeScript coverage
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 dampe/
@@ -92,7 +92,7 @@ dampe/
 └── public/                 
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 - Node.js 18+ or Bun
@@ -159,16 +159,6 @@ npm run dev
 
 Visit `http://localhost:3000` to see your application running!
 
-## 🔧 Available Scripts
-
-```bash
-bun dev          # Start development server with Turbopack
-bun build        # Build for production
-bun start        # Start production server
-bun lint         # Run ESLint
-```
-
-## 🌟 Core Features Breakdown
 
 ### File Upload & Management
 - Drag-and-drop file uploads
@@ -188,14 +178,14 @@ bun lint         # Run ESLint
 - Filter by file type, date, size
 - Tag-based organization
 
-## 🔒 Security Features
+## Security Features
 
 - **Authentication**: Multi-provider OAuth with Better Auth
 - **File Security**: Signed URLs for secure file access
 - **Data Protection**: Encrypted storage with AWS S3/R2
 - **Privacy**: User data isolation and GDPR compliance
 
-## 🎨 UI Components
+## UI Components
 
 Built with modern design principles:
 - **Responsive Design**: Mobile-first approach
@@ -203,30 +193,12 @@ Built with modern design principles:
 - **Theme Support**: Dark/light mode toggle
 - **Animations**: Smooth transitions and micro-interactions
 
-## 📈 Performance
+## Performance
 
 - **Fast Loading**: Turbopack for lightning-fast builds
 - **Optimized Images**: Next.js Image optimization
 - **Lazy Loading**: Component-level code splitting
 - **Caching**: Intelligent caching with TanStack Query
 
-## 🤝 Contributing
-
-We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- **Demon Slayer**: Inspiration for the "Mist Breathing" theme
-- **shadcn/ui**: Beautiful UI components
-- **Vercel**: Deployment platform
-- **Neon**: Serverless PostgreSQL
 
 ---
-
-<div align="center">
-
-</div>
