@@ -6,7 +6,6 @@ export async function parsePdf(arrayBuffer: ArrayBuffer): Promise<string> {
 
     const pdfParse = (await import("pdf-parse")).default;
 
-    // Ensure we're never passing a string path
     if (typeof arrayBuffer === "string") {
       throw new Error(`parsePdf received a string path instead of ArrayBuffer`);
     }
@@ -20,7 +19,6 @@ export async function parsePdf(arrayBuffer: ArrayBuffer): Promise<string> {
   } catch (error) {
     console.error("PDF parse error:", error);
 
-    // Fallback: naive sniffing from binary
     const buffer = Buffer.isBuffer(arrayBuffer)
       ? arrayBuffer
       : Buffer.from(arrayBuffer);
