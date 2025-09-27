@@ -198,7 +198,7 @@ Built with modern design principles:
 - **Fast Loading**: Turbopack for lightning-fast builds
 - **Optimized Images**: Next.js Image optimization
 - **Lazy Loading**: Component-level code splitting
-- **Caching**: Intelligent caching with TanStack Query
+- **Optimized Fetching**: Custom hooks for efficient data management
 
 
 ---
