@@ -7,7 +7,7 @@ import { GetObjectCommand } from "@aws-sdk/client-s3";
 import { r2 } from "@/lib/r2";
 import mammoth from "mammoth";
 import Groq from "groq-sdk";
-import { parsePdf, parseDocx, parseText, getSupportedFileTypes, getFileTypeCategory } from "@/lib/file-parsers"
+import { parsePdf, parseDocx, parseText, getSupportedFileTypes, getFileTypeCategory, summarizePdf } from "@/lib/file-parsers"
 
 
 const client = new Groq({ apiKey: process.env.GROQ_API_KEY! });

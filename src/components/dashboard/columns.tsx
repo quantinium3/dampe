@@ -148,11 +148,13 @@ export function AnalysisDialog() {
     
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogContent className="max-w-2xl">
+            <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
-                    <DialogTitle>AI Document Analysis</DialogTitle>
+                    <DialogTitle className="text-xl font-semibold">🤖 AI Document Analysis</DialogTitle>
                 </DialogHeader>
-                {fileId && <FileAnalysis fileId={fileId} />}
+                <div className="mt-4">
+                    {fileId && <FileAnalysis fileId={fileId} />}
+                </div>
             </DialogContent>
         </Dialog>
     );
