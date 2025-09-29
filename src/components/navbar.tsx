@@ -1,9 +1,14 @@
 "use client"
 import { useSession } from "@/lib/auth-client";
 import { Button } from "./ui/button";
+import { link } from "fs/promises";
 
 export default function Navbar() {
     const { data: session } = useSession();
+
+    const handleNexus = () => {
+        window.location.href = "/";
+    }
 
     const handleDashboardClick = () => {
         if (session) {
@@ -21,22 +26,23 @@ export default function Navbar() {
     }
 
     const handleSignIn = async () => {
-        if(!session){
+        if (!session) {
             window.location.href = "/signin"
         }
     }
- 
+
     return (
         <nav className="flex items-center justify-between p-4 border-b border-b-slate-200">
             <div className="font-bold text-2xl">
-                Nexus
+                <Button variant="outline" className="cursor-pointer text-lg hover:bg-cyan-400" onClick={handleNexus}>Nexus</Button>
             </div>
+
             <div>
                 {session && (
                     <>
-                        {/* <Button variant="link" className="cursor-pointer text-lg" onClick={handleDashboardClick}>
+                        <Button variant="link" className="cursor-pointer text-lg" onClick={handleDashboardClick}>
                             Dashboard
-                        </Button> */}
+                        </Button>
                         <Button variant="link" className="cursor-pointer text-lg" onClick={handleProfileClick}>
                             Profile
                         </Button>
