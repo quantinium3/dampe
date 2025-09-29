@@ -34,7 +34,7 @@ export default function Navbar() {
     return (
         <nav className="flex items-center justify-between p-4 border-b border-b-slate-200">
             <div className="font-bold text-2xl">
-                <Button variant="outline" className="cursor-pointer text-lg hover:bg-cyan-400" onClick={handleNexus}>Nexus</Button>
+                <Button variant="outline" className="text-lg hover:bg-cyan-400" onClick={handleNexus}>Nexus</Button>
             </div>
 
             <div>
