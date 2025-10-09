@@ -56,8 +56,9 @@ Dampe is a modern, intelligent cloud storage platform that combines secure file 
 ### **AI & Machine Learning**
 - **Text Analysis**: Groq SDK for document processing
 - **Image Processing**: Hugging Face Transformers
+- **Text Extraction from PDF**: Used gemini-2.5-flash for PDF-Text Extraction
 - **OCR**: Xenova Transformers for text extraction
-- **File Parsing**: Mammoth (DOCX), PDF-Parse
+- **File Parsing**: Mammoth (DOCX)
 
 ### **Cloud Infrastructure**
 - **File Storage**: AWS S3 SDK with Cloudflare R2
