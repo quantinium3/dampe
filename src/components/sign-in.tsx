@@ -105,7 +105,7 @@ export default function SignIn() {
                     >
                         <Button
                             variant="outline"
-                            className={cn("w-full gap-2")}
+                            className={cn("w-full gap-2 cursor-pointer")}
                             onClick={async () => {
                                 await signIn.social({
                                     provider: "google",
