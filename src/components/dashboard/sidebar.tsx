@@ -23,27 +23,27 @@ import {
 const mainItems = [
     {
         title: "My Drive",
-        url: "#",
+        url: "/comingSoon",
         icon: Cloud,
     },
     {
         title: "Shared with me",
-        url: "#",
+        url: "/comingSoon",
         icon: Users,
     },
     {
         title: "Recent",
-        url: "#",
+        url: "/comingSoon",
         icon: Clock,
     },
     {
         title: "Starred",
-        url: "#",
+        url: "/comingSoon",
         icon: Star,
     },
     {
         title: "Trash",
-        url: "#",
+        url: "/comingSoon",
         icon: Trash2,
     },
 ]
