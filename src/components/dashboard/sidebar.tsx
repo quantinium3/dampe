@@ -58,11 +58,6 @@ const quickActions = [
 
 const aiItems = [
     {
-        title: "AI Assistant",
-        url: "#",
-        icon: Bot,
-    },
-    {
         title: "Document AI",
         url: "/dashboard/document-ai",
         icon: FileText,
