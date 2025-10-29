@@ -22,8 +22,6 @@ export async function POST(request: NextRequest) {
     })
 
     const data = await response.json()
-    console.log("AutoRAG full response:", JSON.stringify(data, null, 2))
-    console.log("Response status:", response.status)
     
     if (!data.success && data.errors) {
       return NextResponse.json({
