@@ -46,8 +46,8 @@ export default function DocumentAIPage() {
   return (
     <div className="p-6 space-y-6">
       <div className="flex items-center gap-3">
-        <FileText className="h-8 w-8 text-blue-600" />
-        <h1 className="text-3xl font-bold">Document AI Search</h1>
+        <FileText className="h-8 w-8" />
+        <h1 className="text-3xl font-semibold">Document AI Search</h1>
       </div>
 
       <Card>
