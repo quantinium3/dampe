@@ -51,7 +51,7 @@ const mainItems = [
 const quickActions = [
     {
         title: "Upload Files",
-        url: "#",
+        url: "/dashboard",
         icon: Upload,
     },
 ]
@@ -64,7 +64,7 @@ const aiItems = [
     },
     {
         title: "Document AI",
-        url: "#",
+        url: "/dashboard/document-ai",
         icon: FileText,
     },
 ]
