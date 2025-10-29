@@ -13,6 +13,7 @@ interface SearchResult {
   metadata?: {
     filename?: string
     fileType?: string
+    filesFound?: number
   }
 }
 
@@ -75,15 +76,35 @@ export default function DocumentAIPage() {
           {results.map((result, index) => (
             <Card key={index}>
               <CardContent className="pt-4">
-                <div className="flex justify-between items-start mb-2">
-                  <span className="text-sm text-muted-foreground">
-                    {result.metadata?.filename || "Document"}
-                  </span>
-                  <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
-                    Relevance: {((result.score || 0) * 100).toFixed(1)}%
-                  </span>
+                <div className="flex justify-between items-start mb-4">
+                  <div className="flex gap-2">
+                    {result.metadata?.filesFound && (
+                      <span className="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">
+                        {result.metadata.filesFound} files analyzed
+                      </span>
+                    )}
+                  </div>
                 </div>
-                <p className="text-sm">{result.content}</p>
+                <div className="prose prose-sm max-w-none">
+                  {result.content.split('\n').map((line, i) => {
+                    if (line.startsWith('### ')) {
+                      return <h3 key={i} className="text-lg font-semibold mt-4 mb-2">{line.replace('### ', '')}</h3>
+                    }
+                    if (line.startsWith('#### ')) {
+                      return <h4 key={i} className="text-base font-medium mt-3 mb-1">{line.replace('#### ', '')}</h4>
+                    }
+                    if (line.startsWith('- ')) {
+                      return <li key={i} className="ml-4 list-disc">{line.replace('- ', '')}</li>
+                    }
+                    if (line.startsWith('* ')) {
+                      return <li key={i} className="ml-4 list-disc">{line.replace('* ', '')}</li>
+                    }
+                    if (line.trim() === '') {
+                      return <br key={i} />
+                    }
+                    return <p key={i} className="mb-2">{line}</p>
+                  })}
+                </div>
               </CardContent>
             </Card>
           ))}
