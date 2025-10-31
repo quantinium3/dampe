@@ -102,6 +102,9 @@ export default function DocumentAIPage() {
                     if (line.trim() === '') {
                       return <br key={i} />
                     }
+                    if(line.startsWith('**')){
+                      return <li key={i} className="ml-4 list-disc">{line.replace('**', '')}</li>
+                    }
                     return <p key={i} className="mb-2">{line}</p>
                   })}
                 </div>
