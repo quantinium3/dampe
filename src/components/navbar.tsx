@@ -1,10 +1,11 @@
 "use client"
 import { useSession } from "@/lib/auth-client";
 import { Button } from "./ui/button";
-import { link } from "fs/promises";
+import { useRouter } from 'next/navigation'
 
 export default function Navbar() {
     const { data: session } = useSession();
+    const router = useRouter();
 
     const handleNexus = () => {
         window.location.href = "/";
@@ -12,7 +13,9 @@ export default function Navbar() {
 
     const handleDashboardClick = () => {
         if (session) {
-            window.location.href = "/dashboard";
+            router.push('/dashboard')
+        } else {
+            router.push('/signin')
         }
     }
     const handleSignOutClick = async () => {
