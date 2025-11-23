@@ -1,0 +1,8 @@
+transformers
+peft
+torch
+datasets
+accelerate
+flask
+PyPDF2
+sentencepiece
