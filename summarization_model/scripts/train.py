@@ -1,4 +1,5 @@
 import torch
+import numpy as np
 from transformers import (
     AutoModelForSeq2SeqLM,
     AutoTokenizer,
@@ -9,6 +10,7 @@ from transformers import (
 from peft import LoraConfig, get_peft_model, TaskType
 from datasets import load_from_disk
 from prepare_data import prepare_cnn_dailymail, preprocess_function
+import evaluate
 
 def train_model():
     """Fine-tune FLAN-T5-Base with LoRA."""
@@ -53,6 +55,17 @@ def train_model():
         remove_columns=val_dataset.column_names
     )
     
+    # Load ROUGE metric
+    rouge = evaluate.load("rouge")
+
+    def compute_metrics(eval_pred):
+        predictions, labels = eval_pred
+        decoded_preds = tokenizer.batch_decode(predictions, skip_special_tokens=True)
+        labels = np.where(labels != -100, labels, tokenizer.pad_token_id)
+        decoded_labels = tokenizer.batch_decode(labels, skip_special_tokens=True)
+        result = rouge.compute(predictions=decoded_preds, references=decoded_labels)
+        return {k: round(v, 4) for k, v in result.items()}
+
     # Data collator
     data_collator = DataCollatorForSeq2Seq(tokenizer, model=model)
     
@@ -83,7 +96,8 @@ def train_model():
         train_dataset=train_dataset,
         eval_dataset=val_dataset,
         tokenizer=tokenizer,
-        data_collator=data_collator
+        data_collator=data_collator,
+        compute_metrics=compute_metrics
     )
     
     # Train
