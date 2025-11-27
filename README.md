@@ -1,4 +1,4 @@
-# 🌊 Dampe - AI-Powered Cloud Storage Platform
+# Dampe - AI-Powered Cloud Storage Platform
 
 > *"Store Here, Access Anywhere - Powered by AI"*  
 
