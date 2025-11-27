@@ -13,6 +13,7 @@ import { signOut, useSession } from "@/lib/auth-client";
 import { redirect } from "next/navigation";
 import { SidebarTrigger } from "../ui/sidebar";
 import { Button } from "../ui/button";
+import Link from "next/link";
 
 export default function DashboardNavbar() {
     const { data: session } = useSession();
@@ -29,7 +30,9 @@ export default function DashboardNavbar() {
             <div className="flex justify-between items-center p-2 border-b">
                 <div className="flex items-center">
                     <SidebarTrigger />
-                    <span className="font-bold text-xl">Nexus</span>
+                    <span className="font-bold text-xl">
+                        <Link href="/">Nexus</Link>
+                    </span>
                 </div>
 
                 {session ? (

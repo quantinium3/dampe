@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { Cloud, Search, Shield, Zap } from "lucide-react"
 
+
 export default function Landing() {
     const { data: session } = useSession();
     const handleDashboardClick = () => {

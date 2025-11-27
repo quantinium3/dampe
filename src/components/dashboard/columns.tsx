@@ -150,7 +150,7 @@ export function AnalysisDialog() {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
-                    <DialogTitle className="text-xl font-semibold">🤖 AI Document Analysis</DialogTitle>
+                    <DialogTitle className="text-xl font-semibold">AI Document Analysis</DialogTitle>
                 </DialogHeader>
                 <div className="mt-4">
                     {fileId && <FileAnalysis fileId={fileId} />}
