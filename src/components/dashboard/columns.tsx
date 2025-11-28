@@ -83,6 +83,21 @@ const handleAnalyze = (fileId: string) => {
     }
 };
 
+const handleDownload = async (fileId: string) => {
+    try {
+        const response = await fetch(`/api/files/${fileId}/download`);
+        if (!response.ok) {
+            throw new Error('Download failed');
+        }
+        const data = await response.json();
+        window.open(data.downloadUrl, '_blank');
+    } catch (error) {
+        console.error('Download error:', error);
+        alert('Failed to download file');
+    }
+};
+
+
 // Delete dialog state will be managed in the component
 let deleteDialog: {
     open: boolean;
@@ -270,7 +285,7 @@ export const columns: ColumnDef<DampeFile>[] = [
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem onClick={() => handleAnalyze(file.id)}>AI-Analyze</DropdownMenuItem>
-                        <DropdownMenuItem>Download</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleDownload(file.id)}>Download</DropdownMenuItem>
                         <DropdownMenuItem>Rename</DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>Share</DropdownMenuItem>
