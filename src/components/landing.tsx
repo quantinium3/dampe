@@ -22,7 +22,7 @@ export default function Landing() {
             <main className="container mx-auto px-4 py-16">
                 <div className="text-center mb-16">
                     <h1 className="text-5xl font-bold text-gray-900 mb-6">
-                        Store Here, Access Anywhere <span className="text-cyan-500">Powered by AI</span>
+                        Store Here, Access Anywhere <span className="text-cyan-500 underline">Powered by AI</span>
                     </h1>
                     <p className="text-xl text-gray-700 mb-8 max-w-2xl mx-auto">
                         Store, organize, and find your files instantly with this intelligent cloud storage platform. Access
